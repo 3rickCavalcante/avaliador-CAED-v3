@@ -6,6 +6,7 @@
     <title>Avaliador de Redações CAED</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* (Mantendo todo o CSS anterior igual) */
         :root {
             --primary: #4361ee;
             --secondary: #3a0ca3;
@@ -548,12 +549,12 @@
                 
                 <div class="form-group">
                     <label for="theme"><i class="fas fa-pencil-alt"></i> Tema da Redação:</label>
-                    <input type="text" id="theme" placeholder="Ex: A importância da preservação ambiental">
+                    <input type="text" id="theme" placeholder="Ex: A importância da preservação ambiental" value="Preservação ambiental">
                 </div>
                 
                 <div class="form-group">
                     <label for="essay"><i class="fas fa-file-alt"></i> Digite sua redação:</label>
-                    <textarea id="essay" placeholder="Cole ou digite sua redação aqui..."></textarea>
+                    <textarea id="essay" placeholder="Cole ou digite sua redação aqui...">A preservação ambiental é um tema muito importante nos dias de hoje. A natureza precisa ser cuidada por todos nós. É preciso que as pessoas se conscientizem sobre a importância de reciclar o lixo e não jogar nas ruas. Além disso, é fundamental economizar água e energia elétrica. As florestas são importantes para o equilíbrio do planeta e não podem ser desmatadas. Todos devemos fazer nossa parte para proteger o meio ambiente.</textarea>
                 </div>
                 
                 <button id="evaluate-btn" class="btn">
@@ -804,6 +805,13 @@
     </div>
 
     <script>
+        // Variável global para armazenar os destaques
+        let highlights = {
+            I: [], // Competência I - Registro formal
+            II: [], // Competência II - Adequação ao tema
+            III: [] // Competência III - Coerência e coesão
+        };
+
         document.addEventListener('DOMContentLoaded', function() {
             // Configuração das abas
             const tabs = document.querySelectorAll('.tab');
@@ -859,12 +867,12 @@
                 document.getElementById('no-results').style.display = 'none';
                 document.getElementById('results-content').classList.add('hidden');
                 
-                // Simular processamento da IA (em um sistema real, isso seria uma chamada API)
+                // Simular processamento da IA
                 setTimeout(function() {
                     evaluateEssay(essayText, grade, theme);
                     document.getElementById('loading').style.display = 'none';
                     document.getElementById('results-content').classList.remove('hidden');
-                }, 2500);
+                }, 1500);
             });
             
             // Botão de impressão
@@ -874,9 +882,6 @@
         });
         
         function evaluateEssay(essay, grade, theme) {
-            // Em um sistema real, isso seria processado por uma IA
-            // Aqui estamos simulando uma avaliação baseada em algumas regras simples
-            
             // Competência I - Registro formal
             const scoreI = evaluateFormalRegister(essay, grade);
             
@@ -887,85 +892,45 @@
             const scoreIII = evaluateCoherenceCohesion(essay, grade);
             
             // Identificar termos para destacar
-            const highlights = identifyHighlights(essay, theme);
+            identifyHighlights(essay, theme);
             
             // Atualizar a interface com os resultados
-            updateResults(scoreI, scoreII, scoreIII, essay, grade, theme, highlights);
+            updateResults(scoreI, scoreII, scoreIII, essay, grade, theme);
         }
         
         function identifyHighlights(essay, theme) {
-            // Identificar termos problemáticos para cada competência
-            // Em um sistema real, isso seria feito por um algoritmo de NLP
+            // Resetar os highlights
+            highlights = { I: [], II: [], III: [] };
             
-            const highlights = {
-                I: [], // Competência I - Registro formal
-                II: [], // Competência II - Adequação ao tema
-                III: [] // Competência III - Coerência e coesão
-            };
-            
-            // Palavras comuns que podem ter problemas de ortografia
-            const commonSpellingIssues = [
+            // Competência I - Problemas de ortografia
+            const spellingIssues = [
                 { word: "concerteza", correct: "com certeza" },
                 { word: "menas", correct: "menos" },
                 { word: "rázão", correct: "razão" },
-                { word: "proucura", correct: "procura" },
-                { word: "adevogado", correct: "advogado" },
-                { word: "embaixo", correct: "em baixo" },
-                { word: "encomodo", correct: "incômodo" },
-                { word: "estrupo", correct: "estupro" },
-                { word: "mendingo", correct: "mendigo" },
-                { word: "previlégio", correct: "privilégio" }
+                { word: "proucura", correct: "procura" }
             ];
             
-            // Identificar problemas de Competência I (Registro formal)
-            commonSpellingIssues.forEach(issue => {
-                const regex = new RegExp(issue.word, 'gi');
-                let match;
-                while ((match = regex.exec(essay)) !== null) {
+            spellingIssues.forEach(issue => {
+                if (essay.toLowerCase().includes(issue.word)) {
                     highlights.I.push({
-                        term: match[0],
-                        start: match.index,
-                        end: match.index + match[0].length,
+                        term: issue.word,
                         explanation: `Possível erro de ortografia. O correto é "${issue.correct}".`
                     });
                 }
             });
             
-            // Identificar problemas de pontuação (Competência I)
-            const punctuationIssues = [
-                { pattern: /,\s*e/gi, explanation: "Evite vírgula antes de 'e' em enumerações." },
-                { pattern: /\s\./g, explanation: "Não use espaço antes do ponto final." },
-                { pattern: /\.\w/g, explanation: "Use espaço após o ponto final." }
-            ];
-            
-            punctuationIssues.forEach(issue => {
-                let match;
-                while ((match = issue.pattern.exec(essay)) !== null) {
-                    highlights.I.push({
-                        term: match[0],
-                        start: match.index,
-                        end: match.index + match[0].length,
-                        explanation: issue.explanation
-                    });
-                }
-            });
-            
-            // Identificar termos relacionados ao tema (Competência II)
+            // Competência II - Termos relacionados ao tema
             const themeWords = theme.toLowerCase().split(/\s+/).filter(word => word.length > 3);
             themeWords.forEach(word => {
-                const regex = new RegExp(word, 'gi');
-                let match;
-                while ((match = regex.exec(essay)) !== null) {
+                if (essay.toLowerCase().includes(word)) {
                     highlights.II.push({
-                        term: match[0],
-                        start: match.index,
-                        end: match.index + match[0].length,
+                        term: word,
                         explanation: `Menção ao tema "${theme}".`
                     });
                 }
             });
             
-            // Identificar conectivos (Competência III)
+            // Competência III - Conectivos
             const connectors = [
                 { word: "além disso", explanation: "Conectivo de adição" },
                 { word: "porém", explanation: "Conectivo de oposição" },
@@ -976,21 +941,13 @@
                 { word: "assim", explanation: "Conectivo de conclusão" },
                 { word: "dessa forma", explanation: "Conectivo de conclusão" },
                 { word: "desse modo", explanation: "Conectivo de conclusão" },
-                { word: "logo", explanation: "Conectivo de conclusão" },
-                { word: "em suma", explanation: "Conectivo de conclusão" },
-                { word: "em resumo", explanation: "Conectivo de conclusão" },
-                { word: "finalmente", explanation: "Conectivo de conclusão" },
-                { word: "primeiramente", explanation: "Conectivo de ordenação" }
+                { word: "logo", explanation: "Conectivo de conclusão" }
             ];
             
             connectors.forEach(connector => {
-                const regex = new RegExp(connector.word, 'gi');
-                let match;
-                while ((match = regex.exec(essay)) !== null) {
+                if (essay.toLowerCase().includes(connector.word)) {
                     highlights.III.push({
-                        term: match[0],
-                        start: match.index,
-                        end: match.index + match[0].length,
+                        term: connector.word,
                         explanation: connector.explanation
                     });
                 }
@@ -1001,29 +958,34 @@
         
         function applyHighlight(type) {
             const essayHighlight = document.getElementById('essay-highlight');
-            const originalEssay = document.getElementById('essay').value;
+            let originalEssay = document.getElementById('essay').value;
             let highlightedEssay = originalEssay;
+            
+            // Função para escapar caracteres especiais em regex
+            function escapeRegex(string) {
+                return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            }
             
             // Se for "all", mostrar todos os destaques
             if (type === 'all') {
-                // Primeiro aplicar Competência III (coesão)
+                // Aplicar Competência III (coesão)
                 highlights.III.forEach(highlight => {
                     const term = highlight.term;
-                    const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                    const regex = new RegExp(escapeRegex(term), 'gi');
                     highlightedEssay = highlightedEssay.replace(regex, `<span class="highlight-III" title="${highlight.explanation}">${term}</span>`);
                 });
                 
-                // Depois aplicar Competência II (tema)
+                // Aplicar Competência II (tema)
                 highlights.II.forEach(highlight => {
                     const term = highlight.term;
-                    const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                    const regex = new RegExp(escapeRegex(term), 'gi');
                     highlightedEssay = highlightedEssay.replace(regex, `<span class="highlight-II" title="${highlight.explanation}">${term}</span>`);
                 });
                 
-                // Por último aplicar Competência I (registro formal)
+                // Aplicar Competência I (registro formal)
                 highlights.I.forEach(highlight => {
                     const term = highlight.term;
-                    const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                    const regex = new RegExp(escapeRegex(term), 'gi');
                     highlightedEssay = highlightedEssay.replace(regex, `<span class="highlight-I" title="${highlight.explanation}">${term}</span>`);
                 });
             } else {
@@ -1031,7 +993,7 @@
                 const className = `highlight-${type}`;
                 highlights[type].forEach(highlight => {
                     const term = highlight.term;
-                    const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                    const regex = new RegExp(escapeRegex(term), 'gi');
                     highlightedEssay = highlightedEssay.replace(regex, `<span class="${className}" title="${highlight.explanation}">${term}</span>`);
                 });
             }
@@ -1042,11 +1004,8 @@
             essayHighlight.innerHTML = highlightedEssay;
         }
         
-        // Variável global para armazenar os destaques
-        let highlights = {};
-        
+        // ... (mantendo as outras funções iguais)
         function evaluateFormalRegister(essay, grade) {
-            // Simulação de análise do registro formal
             const errors = countFormalErrors(essay);
             const wordCount = essay.split(/\s+/).length;
             
@@ -1074,7 +1033,6 @@
         }
         
         function evaluateThemeAdequacy(essay, theme, grade) {
-            // Simulação de análise de adequação ao tema
             const themeWords = theme.toLowerCase().split(/\s+/);
             let themeMentions = 0;
             
@@ -1110,7 +1068,6 @@
         }
         
         function evaluateCoherenceCohesion(essay, grade) {
-            // Simulação de análise de coerência e coesão
             const paragraphs = essay.split(/\n\s*\n/).filter(p => p.trim().length > 0);
             const connectors = countConnectors(essay);
             
@@ -1137,10 +1094,7 @@
             };
         }
         
-        function updateResults(scoreI, scoreII, scoreIII, essay, grade, theme, highlightData) {
-            // Armazenar os destaques globalmente
-            highlights = highlightData;
-            
+        function updateResults(scoreI, scoreII, scoreIII, essay, grade, theme) {
             // Atualizar Competência I
             document.getElementById('score-I').textContent = scoreI.score;
             document.getElementById('score-I').className = 'score-badge score-' + scoreI.score;
@@ -1283,15 +1237,6 @@
                         </div>
                     `;
                 }
-                
-                if (scoreI.details.ortografia === 'Precisa melhorar') {
-                    suggestionsI.innerHTML += `
-                        <div class="suggestion-item">
-                            <div class="suggestion-icon"><i class="fas fa-lightbulb"></i></div>
-                            <div>Consulte o dicionário para verificar a grafia de palavras que você tem dúvida.</div>
-                        </div>
-                    `;
-                }
             }
             
             // Sugestões para Competência II
@@ -1314,15 +1259,6 @@
                         </div>
                     `;
                 }
-                
-                if (scoreII.details.desenvolvimento === 'Regular' || scoreII.details.desenvolvimento === 'Insuficiente') {
-                    suggestionsII.innerHTML += `
-                        <div class="suggestion-item">
-                            <div class="suggestion-icon"><i class="fas fa-lightbulb"></i></div>
-                            <div>Relacione mais diretamente sua redação com o tema proposto, usando palavras-chave do enunciado.</div>
-                        </div>
-                    `;
-                }
             }
             
             // Sugestões para Competência III
@@ -1342,15 +1278,6 @@
                         <div class="suggestion-item">
                             <div class="suggestion-icon"><i class="fas fa-lightbulb"></i></div>
                             <div>Utilize mais conectivos como "além disso", "portanto", "entretanto" para melhorar a coesão.</div>
-                        </div>
-                    `;
-                }
-                
-                if (scoreIII.details.progressao === 'Regular' || scoreIII.details.progressao === 'Precisa melhorar') {
-                    suggestionsIII.innerHTML += `
-                        <div class="suggestion-item">
-                            <div class="suggestion-icon"><i class="fas fa-lightbulb"></i></div>
-                            <div>Garanta que cada parágrafo apresente uma ideia principal e que haja progressão entre eles.</div>
                         </div>
                     `;
                 }
@@ -1378,16 +1305,14 @@
             });
         }
         
-        // Funções auxiliares para simulação da análise
         function countFormalErrors(text) {
-            // Simulação simples de contagem de erros formais
             const commonErrors = [
-                /,\s*[eE]/g, // vírgula antes de "e"
-                /\s+\./g, // espaço antes do ponto
-                /\.\S/g, // falta de espaço após ponto
-                /\bmais\s+menos\b/gi, // "mais menos"
-                /\bmenos\s+mais\b/gi, // "menos mais"
-                /(\w)\1{3,}/g // letras repetidas (ex: "muuuuito")
+                /,\s*[eE]/g,
+                /\s+\./g,
+                /\.\S/g,
+                /\bmais\s+menos\b/gi,
+                /\bmenos\s+mais\b/gi,
+                /(\w)\1{3,}/g
             ];
             
             let errorCount = 0;
@@ -1396,17 +1321,15 @@
                 if (matches) errorCount += matches.length;
             });
             
-            return Math.min(errorCount, 8); // Limitar para não exagerar
+            return Math.min(errorCount, 8);
         }
         
         function countConnectors(text) {
-            // Contar conectivos comuns
             const connectors = [
                 'além disso', 'porém', 'contudo', 'entretanto', 'no entanto',
                 'portanto', 'assim', 'dessa forma', 'desse modo', 'logo',
                 'em suma', 'em resumo', 'finalmente', 'primeiramente',
-                'por outro lado', 'também', 'ademais', 'outrossim', 'assim sendo',
-                'dado que', 'visto que', 'uma vez que', 'embora', 'mesmo que'
+                'por outro lado', 'também', 'ademais'
             ];
             
             let count = 0;
@@ -1421,46 +1344,31 @@
         
         function generateFormalRegisterFeedback(score, errors, wordCount, grade) {
             switch(score) {
-                case 'A':
-                    return `Excelente domínio da norma culta! Sua redação apresenta pouquíssimos desvios gramaticais e ortográficos, demonstrando cuidado com o registro formal.`;
-                case 'B':
-                    return `Bom registro formal. Foram identificados ${errors} pequenos desvios. Continue atento à ortografia e pontuação para alcançar a excelência.`;
-                case 'C':
-                    return `Registro formal com algumas dificuldades (${errors} desvios identificados). Recomenda-se revisão mais cuidadosa, especialmente em relação à pontuação.`;
-                case 'D':
-                    return `Registro formal precisa de atenção. Muitos desvios (${errors} identificados) comprometem a qualidade do texto. É fundamental revisar ortografia e gramática.`;
-                default:
-                    return 'Avaliação do registro formal não disponível.';
+                case 'A': return `Excelente domínio da norma culta! Sua redação apresenta pouquíssimos desvios gramaticais e ortográficos.`;
+                case 'B': return `Bom registro formal. Foram identificados ${errors} pequenos desvios. Continue atento à ortografia e pontuação.`;
+                case 'C': return `Registro formal com algumas dificuldades (${errors} desvios identificados). Recomenda-se revisão mais cuidadosa.`;
+                case 'D': return `Registro formal precisa de atenção. Muitos desvios (${errors} identificados) comprometem a qualidade do texto.`;
+                default: return 'Avaliação do registro formal não disponível.';
             }
         }
         
         function generateThemeAdequacyFeedback(score, themeMentions, paragraphs, grade) {
             switch(score) {
-                case 'A':
-                    return `Ótima adequação ao tema! Seu texto aborda claramente o assunto proposto, com desenvolvimento apropriado em ${paragraphs} parágrafos.`;
-                case 'B':
-                    return `Boa adequação ao tema. Seu texto aborda o assunto (${themeMentions} menções ao tema) e possui estruturação em ${paragraphs} parágrafos, mas poderia explorar o tema com mais profundidade.`;
-                case 'C':
-                    return `Adequação ao tema parcial. Seu texto tangencia o assunto (${themeMentions} menções ao tema), mas não o desenvolve suficientemente. A estrutura em ${paragraphs} parágrafos poderia ser melhor organizada.`;
-                case 'D':
-                    return `Adequação ao tema insuficiente. Seu texto não aborda claramente o tema proposto (apenas ${themeMentions} menções) e a estrutura em ${paragraphs} parágrafos precisa ser revista.`;
-                default:
-                    return 'Avaliação da adequação ao tema não disponível.';
+                case 'A': return `Ótima adequação ao tema! Seu texto aborda claramente o assunto proposto.`;
+                case 'B': return `Boa adequação ao tema. Seu texto aborda o assunto, mas poderia explorá-lo mais profundamente.`;
+                case 'C': return `Adequação ao tema parcial. Seu texto tangencia o assunto, mas não o desenvolve suficientemente.`;
+                case 'D': return `Adequação ao tema insuficiente. Seu texto não aborda claramente o tema proposto.`;
+                default: return 'Avaliação da adequação ao tema não disponível.';
             }
         }
         
         function generateCoherenceCohesionFeedback(score, paragraphs, connectors, grade) {
             switch(score) {
-                case 'A':
-                    return `Excelente coerência e coesão! Seu texto está bem organizado em ${paragraphs} parágrafos e utiliza ${connectors} conectivos adequados, garantindo fluidez e clareza.`;
-                case 'B':
-                    return `Boa coerência e coesão. Seu texto tem ${paragraphs} parágrafos e ${connectors} conectivos, mas poderia melhorar a transição entre ideias para uma leitura mais fluida.`;
-                case 'C':
-                    return `Coerência e coesão regulares. Organização em ${paragraphs} parágrafos e uso de ${connectors} conectivos precisam ser aprimorados para melhorar a fluidez do texto.`;
-                case 'D':
-                    return `Coerência e coesão precisam de atenção. Estrutura textual (${paragraphs} parágrafos) e uso de conectivos (${connectors}) são insuficientes, comprometendo a compreensão do texto.`;
-                default:
-                    return 'Avaliação da coerência e coesão não disponível.';
+                case 'A': return `Excelente coerência e coesão! Seu texto está bem organizado e utiliza conectivos adequados.`;
+                case 'B': return `Boa coerência e coesão. Seu texto tem boa organização, mas poderia melhorar a transição entre ideias.`;
+                case 'C': return `Coerência e coesão regulares. Organização e uso de conectivos precisam ser aprimorados.`;
+                case 'D': return `Coerência e coesão precisam de atenção. Estrutura textual e uso de conectivos são insuficientes.`;
+                default: return 'Avaliação da coerência e coesão não disponível.';
             }
         }
     </script>
