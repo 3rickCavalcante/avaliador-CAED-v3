@@ -400,12 +400,13 @@
             display: flex;
             background: white;
             border-radius: var(--radius);
-            padding: 6px;
+            padding: 4px;
             box-shadow: 0 6px 12px rgba(0,0,0,0.08);
             position: relative;
             overflow-x: auto;
             scrollbar-width: none;
             -ms-overflow-style: none;
+            gap: 2px;
         }
         
         .tabs::-webkit-scrollbar {
@@ -414,14 +415,14 @@
         
         .tab {
             flex: 1;
-            min-width: 120px;
+            min-width: 100px;
             text-align: center;
-            padding: 14px 12px;
+            padding: 10px 8px;
             cursor: pointer;
-            border-radius: var(--radius);
+            border-radius: 12px;
             transition: var(--transition);
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             position: relative;
             z-index: 1;
             white-space: nowrap;
@@ -430,7 +431,7 @@
         .tab.active {
             background: var(--gradient-primary);
             color: white;
-            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+            box-shadow: 0 2px 8px rgba(67, 97, 238, 0.3);
         }
         
         .tab-content {
@@ -621,20 +622,20 @@
         }
         
         .highlight-option {
-            padding: 10px 18px;
+            padding: 8px 16px;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 700;
             transition: var(--transition);
             border: 2px solid transparent;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             white-space: nowrap;
         }
         
         .highlight-option.active {
             border-color: var(--primary);
             background: white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
         
         .highlight-option.I { color: #e63946; }
@@ -678,7 +679,7 @@
         .legend {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             margin-top: 18px;
             flex-wrap: wrap;
         }
@@ -686,19 +687,19 @@
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
+            gap: 6px;
+            font-size: 0.8rem;
             font-weight: 600;
-            padding: 8px 16px;
+            padding: 6px 12px;
             background: white;
             border-radius: 50px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         }
         
         .legend-color {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
         }
         
         .legend-I { background-color: rgba(230, 57, 70, 0.2); border: 2px solid #e63946; }
@@ -717,7 +718,7 @@
             font-weight: 700;
             margin-bottom: 12px;
             color: var(--secondary);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -748,7 +749,7 @@
         .progress-label {
             display: flex;
             justify-content: space-between;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--gray);
             font-weight: 500;
         }
@@ -762,21 +763,21 @@
         }
         
         .report-title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: var(--secondary);
             margin-bottom: 18px;
             padding-bottom: 12px;
             border-bottom: 2px solid #f0f2f5;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         
         .improvement-action {
             background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
             border-left: 5px solid var(--success);
-            padding: 18px;
-            margin-bottom: 18px;
+            padding: 16px;
+            margin-bottom: 16px;
             border-radius: 0 var(--radius) var(--radius) 0;
         }
         
@@ -787,6 +788,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            font-size: 1rem;
         }
         
         @media (max-width: 768px) {
@@ -831,8 +833,10 @@
             }
             
             .tab {
-                min-width: calc(50% - 8px);
+                min-width: calc(33.333% - 6px);
                 margin-bottom: 4px;
+                font-size: 0.8rem;
+                padding: 8px 4px;
             }
             
             .highlight-controls {
@@ -841,12 +845,31 @@
             
             .highlight-option {
                 text-align: center;
+                font-size: 0.8rem;
+                padding: 6px 12px;
             }
             
             .legend {
                 flex-direction: column;
                 align-items: center;
-                gap: 10px;
+                gap: 8px;
+            }
+            
+            .legend-item {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tab {
+                min-width: calc(50% - 4px);
+                font-size: 0.75rem;
+                padding: 6px 3px;
+            }
+            
+            .highlight-option {
+                font-size: 0.75rem;
+                padding: 5px 10px;
             }
         }
     </style>
@@ -920,9 +943,9 @@ Em resumo, cuidar do meio ambiente é essencial para garantir um futuro melhor p
                     <div class="tabs-container">
                         <div class="tabs">
                             <div class="tab active" data-tab="summary">Resumo</div>
-                            <div class="tab" data-tab="competence-I">Competência I</div>
-                            <div class="tab" data-tab="competence-II">Competência II</div>
-                            <div class="tab" data-tab="competence-III">Competência III</div>
+                            <div class="tab" data-tab="competence-I">Comp. I</div>
+                            <div class="tab" data-tab="competence-II">Comp. II</div>
+                            <div class="tab" data-tab="competence-III">Comp. III</div>
                             <div class="tab" data-tab="highlights">Destaques</div>
                             <div class="tab" data-tab="report">Relatório</div>
                         </div>
