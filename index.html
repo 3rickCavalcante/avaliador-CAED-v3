@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliador de Redações CAED</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --warning: #ff9e00;
+            --danger: #e63946;
+            --radius: 12px;
+            --shadow: 0 10px 20px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .app-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 1100px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
+        select, input, textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        textarea {
+            min-height: 300px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .spinner {
+            border: 5px solid rgba(67, 97, 238, 0.2);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .overall-score {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px;
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+        }
+        
+        .score-value {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1;
+            margin: 15px 0;
+        }
+        
+        .score-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .competence-card {
+            background: var(--light);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--primary);
+            transition: var(--transition);
+        }
+        
+        .competence-card:hover {
+            transform: translateX(5px);
+        }
+        
+        .competence-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .competence-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
+        .score-badge {
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .score-A { background: #4ade80; color: white; }
+        .score-B { background: #60a5fa; color: white; }
+        .score-C { background: #fbbf24; color: white; }
+        .score-D { background: #f87171; color: white; }
+        
+        .feedback {
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        
+        .suggestions {
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-top: 15px;
+        }
+        
+        .suggestion-title {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .suggestion-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f8fafc;
+            border-radius: var(--radius);
+            border-left: 4px solid var(--success);
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .suggestion-icon {
+            color: var(--success);
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 25px;
+            background: white;
+            border-radius: var(--radius);
+            padding: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            font-weight: 600;
+        }
+        
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .improvement-tips {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            padding: 25px;
+            border-radius: var(--radius);
+            margin-top: 30px;
+        }
+        
+        .tips-title {
+            color: white;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tip-item {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: var(--radius);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .tip-icon {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+        
+        .print-btn {
+            background: var(--gray);
+            margin-top: 20px;
+        }
+        
+        .print-btn:hover {
+            background: #5a6268;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .competence-details {
+            margin-top: 20px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .detail-label {
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .essay-highlight-container {
+            margin-top: 30px;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        
+        .highlight-controls {
+            display: flex;
+            background: var(--light);
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .highlight-option {
+            padding: 8px 15px;
+            margin-right: 10px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        
+        .highlight-option.active {
+            border-color: var(--primary);
+            background: white;
+        }
+        
+        .highlight-option.I { color: #e63946; }
+        .highlight-option.II { color: #3a86ff; }
+        .highlight-option.III { color: #ff9e00; }
+        
+        .essay-highlight {
+            padding: 25px;
+            background: white;
+            min-height: 300px;
+            max-height: 500px;
+            overflow-y: auto;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .highlight-I {
+            background-color: rgba(230, 57, 70, 0.2);
+            padding: 2px 4px;
+            border-radius: 3px;
+            border-bottom: 2px solid #e63946;
+        }
+        
+        .highlight-II {
+            background-color: rgba(58, 134, 255, 0.2);
+            padding: 2px 4px;
+            border-radius: 3px;
+            border-bottom: 2px solid #3a86ff;
+        }
+        
+        .highlight-III {
+            background-color: rgba(255, 158, 0, 0.2);
+            padding: 2px 4px;
+            border-radius: 3px;
+            border-bottom: 2px solid #ff9e00;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+        
+        .legend-I { background-color: rgba(230, 57, 70, 0.2); border: 1px solid #e63946; }
+        .legend-II { background-color: rgba(58, 134, 255, 0.2); border: 1px solid #3a86ff; }
+        .legend-III { background-color: rgba(255, 158, 0, 0.2); border: 1px solid #ff9e00; }
+        
+        .highlight-explanation {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: var(--radius);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .explanation-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-graduation-cap"></i> Avaliador de Redações CAED</h1>
+            <p class="subtitle">Avaliação inteligente com IA para os anos finais do Ensino Fundamental</p>
+        </header>
+        
+        <div class="app-container">
+            <section class="card">
+                <h2 class="card-title"><i class="fas fa-edit"></i> Informações da Redação</h2>
+                
+                <div class="form-group">
+                    <label for="grade"><i class="fas fa-user-graduate"></i> Ano Escolar:</label>
+                    <select id="grade">
+                        <option value="6">6º Ano</option>
+                        <option value="7">7º Ano</option>
+                        <option value="8">8º Ano</option>
+                        <option value="9">9º Ano</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="theme"><i class="fas fa-pencil-alt"></i> Tema da Redação:</label>
+                    <input type="text" id="theme" placeholder="Ex: A importância da preservação ambiental">
+                </div>
+                
+                <div class="form-group">
+                    <label for="essay"><i class="fas fa-file-alt"></i> Digite sua redação:</label>
+                    <textarea id="essay" placeholder="Cole ou digite sua redação aqui..."></textarea>
+                </div>
+                
+                <button id="evaluate-btn" class="btn">
+                    <i class="fas fa-robot"></i> Avaliar Redação com IA
+                </button>
+            </section>
+            
+            <section class="card">
+                <div class="results-header">
+                    <h2 class="card-title"><i class="fas fa-chart-line"></i> Resultados da Avaliação</h2>
+                </div>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <h3>Analisando sua redação com IA...</h3>
+                    <p>Isso pode levar alguns segundos</p>
+                </div>
+                
+                <div id="no-results">
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <i class="fas fa-file-alt" style="font-size: 4rem; color: #c3cfe2; margin-bottom: 20px;"></i>
+                        <h3 style="color: var(--gray); margin-bottom: 15px;">Nenhuma redação avaliada ainda</h3>
+                        <p>Preencha os dados da redação ao lado e clique em "Avaliar Redação com IA" para ver os resultados.</p>
+                    </div>
+                </div>
+                
+                <div id="results-content" class="hidden">
+                    <div class="overall-score">
+                        <div class="score-label">Pontuação Geral</div>
+                        <div class="score-value" id="overall-score">8.2</div>
+                        <div class="score-label">em 10 pontos</div>
+                    </div>
+                    
+                    <div class="tabs">
+                        <div class="tab active" data-tab="summary">Resumo</div>
+                        <div class="tab" data-tab="competence-I">Competência I</div>
+                        <div class="tab" data-tab="competence-II">Competência II</div>
+                        <div class="tab" data-tab="competence-III">Competência III</div>
+                        <div class="tab" data-tab="highlights">Destaques</div>
+                    </div>
+                    
+                    <div class="tab-content active" id="summary-tab">
+                        <div class="stats">
+                            <div class="stat-card">
+                                <div class="stat-label">Registro Formal</div>
+                                <div class="stat-value" id="stat-I">A</div>
+                                <div class="stat-label">Competência I</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Adequação ao Tema</div>
+                                <div class="stat-value" id="stat-II">B</div>
+                                <div class="stat-label">Competência II</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Coerência e Coesão</div>
+                                <div class="stat-value" id="stat-III">B</div>
+                                <div class="stat-label">Competência III</div>
+                            </div>
+                        </div>
+                        
+                        <div class="competence-card">
+                            <div class="competence-header">
+                                <div class="competence-title">Resumo da Avaliação</div>
+                            </div>
+                            <div class="feedback" id="summary-feedback">
+                                Sua redação apresenta bom desenvolvimento, com registro formal adequado e boa estruturação textual. 
+                                Continue praticando para aprimorar ainda mais suas habilidades de escrita.
+                            </div>
+                        </div>
+                        
+                        <div class="improvement-tips">
+                            <h3 class="tips-title"><i class="fas fa-lightbulb"></i> Dicas Gerais de Melhoria</h3>
+                            <div id="general-tips">
+                                <!-- Dicas gerais serão inseridas aqui -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="competence-I-tab">
+                        <div class="competence-card">
+                            <div class="competence-header">
+                                <div class="competence-title">Competência I - Registro Formal</div>
+                                <div class="score-badge score-A" id="score-I">A</div>
+                            </div>
+                            <div class="feedback" id="feedback-I">
+                                Excelente domínio da norma culta! Sua redação apresenta pouquíssimos desvios gramaticais e ortográficos.
+                            </div>
+                            
+                            <div class="competence-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Ortografia</span>
+                                    <span class="detail-value">Excelente</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Pontuação</span>
+                                    <span class="detail-value">Adequada</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Registro Linguístico</span>
+                                    <span class="detail-value">Apropriado</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Desvios Identificados</span>
+                                    <span class="detail-value">2</span>
+                                </div>
+                            </div>
+                            
+                            <div class="suggestions">
+                                <h4 class="suggestion-title"><i class="fas fa-magic"></i> Sugestões para Melhorar</h4>
+                                <div id="suggestions-I">
+                                    <!-- Sugestões para Competência I serão inseridas aqui -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="competence-II-tab">
+                        <div class="competence-card">
+                            <div class="competence-header">
+                                <div class="competence-title">Competência II - Adequação ao Tema e Estrutura Textual</div>
+                                <div class="score-badge score-B" id="score-II">B</div>
+                            </div>
+                            <div class="feedback" id="feedback-II">
+                                Boa adequação ao tema! Seu texto aborda o assunto proposto, mas poderia explorá-lo com mais profundidade.
+                            </div>
+                            
+                            <div class="competence-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Adequação ao Tema</span>
+                                    <span class="detail-value">Boa</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Estrutura Textual</span>
+                                    <span class="detail-value">Adequada</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Desenvolvimento do Tema</span>
+                                    <span class="detail-value">Regular</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Parágrafos</span>
+                                    <span class="detail-value">4</span>
+                                </div>
+                            </div>
+                            
+                            <div class="suggestions">
+                                <h4 class="suggestion-title"><i class="fas fa-magic"></i> Sugestões para Melhorar</h4>
+                                <div id="suggestions-II">
+                                    <!-- Sugestões para Competência II serão inseridas aqui -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="competence-III-tab">
+                        <div class="competence-card">
+                            <div class="competence-header">
+                                <div class="competence-title">Competência III - Construção da Coerência e Coesão Textual</div>
+                                <div class="score-badge score-B" id="score-III">B</div>
+                            </div>
+                            <div class="feedback" id="feedback-III">
+                                Boa coerência e coesão! Seu texto apresenta uma linha de raciocínio clara, mas poderia utilizar mais elementos coesivos.
+                            </div>
+                            
+                            <div class="competence-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Coerência Textual</span>
+                                    <span class="detail-value">Boa</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Coesão Textual</span>
+                                    <span class="detail-value">Regular</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Conectivos Utilizados</span>
+                                    <span class="detail-value">5</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Progressão Textual</span>
+                                    <span class="detail-value">Adequada</span>
+                                </div>
+                            </div>
+                            
+                            <div class="suggestions">
+                                <h4 class="suggestion-title"><i class="fas fa-magic"></i> Sugestões para Melhorar</h4>
+                                <div id="suggestions-III">
+                                    <!-- Sugestões para Competência III serão inseridas aqui -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="highlights-tab">
+                        <div class="competence-card">
+                            <div class="competence-header">
+                                <div class="competence-title">Destaques na Redação</div>
+                            </div>
+                            <div class="feedback">
+                                <p>Esta visualização destaca termos e expressões que merecem atenção em cada competência. Use os controles abaixo para alternar entre as diferentes visualizações.</p>
+                            </div>
+                            
+                            <div class="essay-highlight-container">
+                                <div class="highlight-controls">
+                                    <div class="highlight-option active" data-highlight="all">Todos os Destaques</div>
+                                    <div class="highlight-option I" data-highlight="I">Competência I</div>
+                                    <div class="highlight-option II" data-highlight="II">Competência II</div>
+                                    <div class="highlight-option III" data-highlight="III">Competência III</div>
+                                </div>
+                                <div class="essay-highlight" id="essay-highlight">
+                                    <!-- A redação com destaques será inserida aqui -->
+                                </div>
+                            </div>
+                            
+                            <div class="legend">
+                                <div class="legend-item">
+                                    <div class="legend-color legend-I"></div>
+                                    <span>Competência I - Registro Formal</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color legend-II"></div>
+                                    <span>Competência II - Adequação ao Tema</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color legend-III"></div>
+                                    <span>Competência III - Coerência e Coesão</span>
+                                </div>
+                            </div>
+                            
+                            <div class="highlight-explanation">
+                                <div class="explanation-title">Como interpretar os destaques:</div>
+                                <p><strong>Competência I (Vermelho):</strong> Termos com possíveis problemas de ortografia, gramática ou registro formal.</p>
+                                <p><strong>Competência II (Azul):</strong> Expressões que demonstram ou poderiam melhorar a adequação ao tema proposto.</p>
+                                <p><strong>Competência III (Laranja):</strong> Elementos de coesão (conectivos) ou trechos que afetam a coerência do texto.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn print-btn">
+                        <i class="fas fa-print"></i> Imprimir Relatório Completo
+                    </button>
+                </div>
+            </section>
+        </div>
+        
+        <footer>
+            <p>Avaliador de Redações CAED &copy; 2023 - Desenvolvido para os anos finais do Ensino Fundamental</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configuração das abas
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Remove a classe active de todas as abas e conteúdos
+                    tabs.forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // Adiciona a classe active à aba e conteúdo clicados
+                    this.classList.add('active');
+                    document.getElementById(tabId + '-tab').classList.add('active');
+                });
+            });
+            
+            // Configuração dos controles de destaque
+            const highlightOptions = document.querySelectorAll('.highlight-option');
+            highlightOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const highlightType = this.getAttribute('data-highlight');
+                    
+                    // Remove a classe active de todas as opções
+                    highlightOptions.forEach(o => o.classList.remove('active'));
+                    
+                    // Adiciona a classe active à opção clicada
+                    this.classList.add('active');
+                    
+                    // Aplica o destaque selecionado
+                    applyHighlight(highlightType);
+                });
+            });
+            
+            // Botão de avaliação
+            document.getElementById('evaluate-btn').addEventListener('click', function() {
+                const essayText = document.getElementById('essay').value;
+                const grade = document.getElementById('grade').value;
+                const theme = document.getElementById('theme').value;
+                
+                if (!essayText.trim()) {
+                    alert('Por favor, digite uma redação para avaliar.');
+                    return;
+                }
+                
+                if (!theme.trim()) {
+                    alert('Por favor, informe o tema da redação.');
+                    return;
+                }
+                
+                // Mostrar loading
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('no-results').style.display = 'none';
+                document.getElementById('results-content').classList.add('hidden');
+                
+                // Simular processamento da IA (em um sistema real, isso seria uma chamada API)
+                setTimeout(function() {
+                    evaluateEssay(essayText, grade, theme);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('results-content').classList.remove('hidden');
+                }, 2500);
+            });
+            
+            // Botão de impressão
+            document.querySelector('.print-btn').addEventListener('click', function() {
+                window.print();
+            });
+        });
+        
+        function evaluateEssay(essay, grade, theme) {
+            // Em um sistema real, isso seria processado por uma IA
+            // Aqui estamos simulando uma avaliação baseada em algumas regras simples
+            
+            // Competência I - Registro formal
+            const scoreI = evaluateFormalRegister(essay, grade);
+            
+            // Competência II - Adequação ao tema/estrutura textual
+            const scoreII = evaluateThemeAdequacy(essay, theme, grade);
+            
+            // Competência III - Construção da coerência e coesão textual
+            const scoreIII = evaluateCoherenceCohesion(essay, grade);
+            
+            // Identificar termos para destacar
+            const highlights = identifyHighlights(essay, theme);
+            
+            // Atualizar a interface com os resultados
+            updateResults(scoreI, scoreII, scoreIII, essay, grade, theme, highlights);
+        }
+        
+        function identifyHighlights(essay, theme) {
+            // Identificar termos problemáticos para cada competência
+            // Em um sistema real, isso seria feito por um algoritmo de NLP
+            
+            const highlights = {
+                I: [], // Competência I - Registro formal
+                II: [], // Competência II - Adequação ao tema
+                III: [] // Competência III - Coerência e coesão
+            };
+            
+            // Palavras comuns que podem ter problemas de ortografia
+            const commonSpellingIssues = [
+                { word: "concerteza", correct: "com certeza" },
+                { word: "menas", correct: "menos" },
+                { word: "rázão", correct: "razão" },
+                { word: "proucura", correct: "procura" },
+                { word: "adevogado", correct: "advogado" },
+                { word: "embaixo", correct: "em baixo" },
+                { word: "encomodo", correct: "incômodo" },
+                { word: "estrupo", correct: "estupro" },
+                { word: "mendingo", correct: "mendigo" },
+                { word: "previlégio", correct: "privilégio" }
+            ];
+            
+            // Identificar problemas de Competência I (Registro formal)
+            commonSpellingIssues.forEach(issue => {
+                const regex = new RegExp(issue.word, 'gi');
+                let match;
+                while ((match = regex.exec(essay)) !== null) {
+                    highlights.I.push({
+                        term: match[0],
+                        start: match.index,
+                        end: match.index + match[0].length,
+                        explanation: `Possível erro de ortografia. O correto é "${issue.correct}".`
+                    });
+                }
+            });
+            
+            // Identificar problemas de pontuação (Competência I)
+            const punctuationIssues = [
+                { pattern: /,\s*e/gi, explanation: "Evite vírgula antes de 'e' em enumerações." },
+                { pattern: /\s\./g, explanation: "Não use espaço antes do ponto final." },
+                { pattern: /\.\w/g, explanation: "Use espaço após o ponto final." }
+            ];
+            
+            punctuationIssues.forEach(issue => {
+                let match;
+                while ((match = issue.pattern.exec(essay)) !== null) {
+                    highlights.I.push({
+                        term: match[0],
+                        start: match.index,
+                        end: match.index + match[0].length,
+                        explanation: issue.explanation
+                    });
+                }
+            });
+            
+            // Identificar termos relacionados ao tema (Competência II)
+            const themeWords = theme.toLowerCase().split(/\s+/).filter(word => word.length > 3);
+            themeWords.forEach(word => {
+                const regex = new RegExp(word, 'gi');
+                let match;
+                while ((match = regex.exec(essay)) !== null) {
+                    highlights.II.push({
+                        term: match[0],
+                        start: match.index,
+                        end: match.index + match[0].length,
+                        explanation: `Menção ao tema "${theme}".`
+                    });
+                }
+            });
+            
+            // Identificar conectivos (Competência III)
+            const connectors = [
+                { word: "além disso", explanation: "Conectivo de adição" },
+                { word: "porém", explanation: "Conectivo de oposição" },
+                { word: "contudo", explanation: "Conectivo de oposição" },
+                { word: "entretanto", explanation: "Conectivo de oposição" },
+                { word: "no entanto", explanation: "Conectivo de oposição" },
+                { word: "portanto", explanation: "Conectivo de conclusão" },
+                { word: "assim", explanation: "Conectivo de conclusão" },
+                { word: "dessa forma", explanation: "Conectivo de conclusão" },
+                { word: "desse modo", explanation: "Conectivo de conclusão" },
+                { word: "logo", explanation: "Conectivo de conclusão" },
+                { word: "em suma", explanation: "Conectivo de conclusão" },
+                { word: "em resumo", explanation: "Conectivo de conclusão" },
+                { word: "finalmente", explanation: "Conectivo de conclusão" },
+                { word: "primeiramente", explanation: "Conectivo de ordenação" }
+            ];
+            
+            connectors.forEach(connector => {
+                const regex = new RegExp(connector.word, 'gi');
+                let match;
+                while ((match = regex.exec(essay)) !== null) {
+                    highlights.III.push({
+                        term: match[0],
+                        start: match.index,
+                        end: match.index + match[0].length,
+                        explanation: connector.explanation
+                    });
+                }
+            });
+            
+            return highlights;
+        }
+        
+        function applyHighlight(type) {
+            const essayHighlight = document.getElementById('essay-highlight');
+            const originalEssay = document.getElementById('essay').value;
+            let highlightedEssay = originalEssay;
+            
+            // Se for "all", mostrar todos os destaques
+            if (type === 'all') {
+                // Primeiro aplicar Competência III (coesão)
+                highlights.III.forEach(highlight => {
+                    const term = highlight.term;
+                    const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                    highlightedEssay = highlightedEssay.replace(regex, `<span class="highlight-III" title="${highlight.explanation}">${term}</span>`);
+                });
+                
+                // Depois aplicar Competência II (tema)
+                highlights.II.forEach(highlight => {
+                    const term = highlight.term;
+                    const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                    highlightedEssay = highlightedEssay.replace(regex, `<span class="highlight-II" title="${highlight.explanation}">${term}</span>`);
+                });
+                
+                // Por último aplicar Competência I (registro formal)
+                highlights.I.forEach(highlight => {
+                    const term = highlight.term;
+                    const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                    highlightedEssay = highlightedEssay.replace(regex, `<span class="highlight-I" title="${highlight.explanation}">${term}</span>`);
+                });
+            } else {
+                // Aplicar apenas o destaque da competência selecionada
+                const className = `highlight-${type}`;
+                highlights[type].forEach(highlight => {
+                    const term = highlight.term;
+                    const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                    highlightedEssay = highlightedEssay.replace(regex, `<span class="${className}" title="${highlight.explanation}">${term}</span>`);
+                });
+            }
+            
+            // Manter quebras de linha
+            highlightedEssay = highlightedEssay.replace(/\n/g, '<br>');
+            
+            essayHighlight.innerHTML = highlightedEssay;
+        }
+        
+        // Variável global para armazenar os destaques
+        let highlights = {};
+        
+        function evaluateFormalRegister(essay, grade) {
+            // Simulação de análise do registro formal
+            const errors = countFormalErrors(essay);
+            const wordCount = essay.split(/\s+/).length;
+            
+            let score;
+            if (errors === 0 && wordCount > 100) {
+                score = 'A';
+            } else if (errors <= 2) {
+                score = 'B';
+            } else if (errors <= 5) {
+                score = 'C';
+            } else {
+                score = 'D';
+            }
+            
+            return {
+                score: score,
+                feedback: generateFormalRegisterFeedback(score, errors, wordCount, grade),
+                details: {
+                    ortografia: errors === 0 ? 'Excelente' : errors <= 2 ? 'Boa' : errors <= 5 ? 'Regular' : 'Precisa melhorar',
+                    pontuacao: errors <= 2 ? 'Adequada' : 'Precisa atenção',
+                    registro: 'Apropriado',
+                    desvios: errors
+                }
+            };
+        }
+        
+        function evaluateThemeAdequacy(essay, theme, grade) {
+            // Simulação de análise de adequação ao tema
+            const themeWords = theme.toLowerCase().split(/\s+/);
+            let themeMentions = 0;
+            
+            themeWords.forEach(word => {
+                if (word.length > 3 && essay.toLowerCase().includes(word)) {
+                    themeMentions++;
+                }
+            });
+            
+            const paragraphs = essay.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+            
+            let score;
+            if (themeMentions >= 3 && paragraphs.length >= 4) {
+                score = 'A';
+            } else if (themeMentions >= 2 && paragraphs.length >= 3) {
+                score = 'B';
+            } else if (themeMentions >= 1 && paragraphs.length >= 2) {
+                score = 'C';
+            } else {
+                score = 'D';
+            }
+            
+            return {
+                score: score,
+                feedback: generateThemeAdequacyFeedback(score, themeMentions, paragraphs.length, grade),
+                details: {
+                    adequacao: score === 'A' ? 'Excelente' : score === 'B' ? 'Boa' : score === 'C' ? 'Regular' : 'Insuficiente',
+                    estrutura: paragraphs.length >= 4 ? 'Boa' : paragraphs.length >= 3 ? 'Adequada' : 'Precisa melhorar',
+                    desenvolvimento: themeMentions >= 3 ? 'Bom' : themeMentions >= 2 ? 'Regular' : 'Insuficiente',
+                    paragrafos: paragraphs.length
+                }
+            };
+        }
+        
+        function evaluateCoherenceCohesion(essay, grade) {
+            // Simulação de análise de coerência e coesão
+            const paragraphs = essay.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+            const connectors = countConnectors(essay);
+            
+            let score;
+            if (paragraphs.length >= 4 && connectors >= 7) {
+                score = 'A';
+            } else if (paragraphs.length >= 3 && connectors >= 5) {
+                score = 'B';
+            } else if (paragraphs.length >= 2 && connectors >= 3) {
+                score = 'C';
+            } else {
+                score = 'D';
+            }
+            
+            return {
+                score: score,
+                feedback: generateCoherenceCohesionFeedback(score, paragraphs.length, connectors, grade),
+                details: {
+                    coerencia: score === 'A' ? 'Excelente' : score === 'B' ? 'Boa' : score === 'C' ? 'Regular' : 'Precisa melhorar',
+                    coesao: connectors >= 7 ? 'Boa' : connectors >= 5 ? 'Adequada' : connectors >= 3 ? 'Regular' : 'Insuficiente',
+                    conectivos: connectors,
+                    progressao: paragraphs.length >= 4 ? 'Boa' : paragraphs.length >= 3 ? 'Adequada' : 'Precisa melhorar'
+                }
+            };
+        }
+        
+        function updateResults(scoreI, scoreII, scoreIII, essay, grade, theme, highlightData) {
+            // Armazenar os destaques globalmente
+            highlights = highlightData;
+            
+            // Atualizar Competência I
+            document.getElementById('score-I').textContent = scoreI.score;
+            document.getElementById('score-I').className = 'score-badge score-' + scoreI.score;
+            document.getElementById('feedback-I').textContent = scoreI.feedback;
+            document.getElementById('stat-I').textContent = scoreI.score;
+            
+            // Atualizar detalhes da Competência I
+            const detailsI = document.querySelector('#competence-I-tab .competence-details');
+            detailsI.innerHTML = `
+                <div class="detail-item">
+                    <span class="detail-label">Ortografia</span>
+                    <span class="detail-value">${scoreI.details.ortografia}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Pontuação</span>
+                    <span class="detail-value">${scoreI.details.pontuacao}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Registro Linguístico</span>
+                    <span class="detail-value">${scoreI.details.registro}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Desvios Identificados</span>
+                    <span class="detail-value">${scoreI.details.desvios}</span>
+                </div>
+            `;
+            
+            // Atualizar Competência II
+            document.getElementById('score-II').textContent = scoreII.score;
+            document.getElementById('score-II').className = 'score-badge score-' + scoreII.score;
+            document.getElementById('feedback-II').textContent = scoreII.feedback;
+            document.getElementById('stat-II').textContent = scoreII.score;
+            
+            // Atualizar detalhes da Competência II
+            const detailsII = document.querySelector('#competence-II-tab .competence-details');
+            detailsII.innerHTML = `
+                <div class="detail-item">
+                    <span class="detail-label">Adequação ao Tema</span>
+                    <span class="detail-value">${scoreII.details.adequacao}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Estrutura Textual</span>
+                    <span class="detail-value">${scoreII.details.estrutura}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Desenvolvimento do Tema</span>
+                    <span class="detail-value">${scoreII.details.desenvolvimento}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Parágrafos</span>
+                    <span class="detail-value">${scoreII.details.paragrafos}</span>
+                </div>
+            `;
+            
+            // Atualizar Competência III
+            document.getElementById('score-III').textContent = scoreIII.score;
+            document.getElementById('score-III').className = 'score-badge score-' + scoreIII.score;
+            document.getElementById('feedback-III').textContent = scoreIII.feedback;
+            document.getElementById('stat-III').textContent = scoreIII.score;
+            
+            // Atualizar detalhes da Competência III
+            const detailsIII = document.querySelector('#competence-III-tab .competence-details');
+            detailsIII.innerHTML = `
+                <div class="detail-item">
+                    <span class="detail-label">Coerência Textual</span>
+                    <span class="detail-value">${scoreIII.details.coerencia}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Coesão Textual</span>
+                    <span class="detail-value">${scoreIII.details.coesao}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Conectivos Utilizados</span>
+                    <span class="detail-value">${scoreIII.details.conectivos}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Progressão Textual</span>
+                    <span class="detail-value">${scoreIII.details.progressao}</span>
+                </div>
+            `;
+            
+            // Calcular pontuação geral
+            const overallScore = calculateOverallScore(scoreI.score, scoreII.score, scoreIII.score);
+            document.getElementById('overall-score').textContent = overallScore;
+            
+            // Atualizar resumo
+            document.getElementById('summary-feedback').textContent = generateSummaryFeedback(scoreI, scoreII, scoreIII);
+            
+            // Gerar sugestões
+            generateSuggestions(scoreI, scoreII, scoreIII, essay, grade);
+            
+            // Aplicar destaque inicial (todos os destaques)
+            applyHighlight('all');
+        }
+        
+        function calculateOverallScore(scoreI, scoreII, scoreIII) {
+            const scoreMap = { 'A': 9.5, 'B': 8.0, 'C': 6.5, 'D': 4.0 };
+            const total = (scoreMap[scoreI] + scoreMap[scoreII] + scoreMap[scoreIII]) / 3;
+            return total.toFixed(1);
+        }
+        
+        function generateSummaryFeedback(scoreI, scoreII, scoreIII) {
+            const scores = [scoreI.score, scoreII.score, scoreIII.score];
+            const aCount = scores.filter(s => s === 'A').length;
+            const bCount = scores.filter(s => s === 'B').length;
+            const cCount = scores.filter(s => s === 'C').length;
+            const dCount = scores.filter(s => s === 'D').length;
+            
+            if (aCount === 3) {
+                return "Excelente redação! Você demonstra domínio das três competências avaliadas. Continue com esse ótimo trabalho!";
+            } else if (aCount >= 2 && dCount === 0) {
+                return "Muito boa redação! Você se destaca na maioria das competências. Identificamos apenas pequenos pontos a melhorar.";
+            } else if (bCount >= 2 && dCount === 0) {
+                return "Boa redação! Você apresenta desenvolvimento adequado nas competências avaliadas. Com prática, pode alcançar resultados ainda melhores.";
+            } else if (cCount >= 2 || dCount >= 1) {
+                return "Sua redação apresenta potencial, mas precisa de mais desenvolvimento em algumas competências. As sugestões abaixo podem ajudar.";
+            } else {
+                return "Sua redação apresenta aspectos positivos e pontos a melhorar. Continue praticando para desenvolver suas habilidades de escrita.";
+            }
+        }
+        
+        function generateSuggestions(scoreI, scoreII, scoreIII, essay, grade) {
+            // Sugestões para Competência I
+            const suggestionsI = document.getElementById('suggestions-I');
+            suggestionsI.innerHTML = '';
+            
+            if (scoreI.score === 'A') {
+                suggestionsI.innerHTML += `
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon"><i class="fas fa-check-circle"></i></div>
+                        <div>Continue revisando sua redação para manter a excelência no registro formal.</div>
+                    </div>
+                `;
+            } else {
+                if (scoreI.details.desvios > 0) {
+                    suggestionsI.innerHTML += `
+                        <div class="suggestion-item">
+                            <div class="suggestion-icon"><i class="fas fa-lightbulb"></i></div>
+                            <div>Revise a ortografia e pontuação. Leia o texto em voz alta para identificar possíveis erros.</div>
+                        </div>
+                    `;
+                }
+                
+                if (scoreI.details.ortografia === 'Precisa melhorar') {
+                    suggestionsI.innerHTML += `
+                        <div class="suggestion-item">
+                            <div class="suggestion-icon"><i class="fas fa-lightbulb"></i></div>
+                            <div>Consulte o dicionário para verificar a grafia de palavras que você tem dúvida.</div>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Sugestões para Competência II
+            const suggestionsII = document.getElementById('suggestions-II');
+            suggestionsII.innerHTML = '';
+            
+            if (scoreII.score === 'A') {
+                suggestionsII.innerHTML += `
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon"><i class="fas fa-check-circle"></i></div>
+                        <div>Excelente desenvolvimento temático! Continue explorando os temas com profundidade.</div>
+                    </div>
+                `;
+            } else {
+                if (scoreII.details.paragrafos < 4) {
+                    suggestionsII.innerHTML += `
+                        <div class="suggestion-item">
+                            <div class="suggestion-icon"><i class="fas fa-lightbulb"></i></div>
+                            <div>Estruture seu texto em pelo menos 4 parágrafos: introdução, 2 de desenvolvimento e conclusão.</div>
+                        </div>
+                    `;
+                }
+                
+                if (scoreII.details.desenvolvimento === 'Regular' || scoreII.details.desenvolvimento === 'Insuficiente') {
+                    suggestionsII.innerHTML += `
+                        <div class="suggestion-item">
+                            <div class="suggestion-icon"><i class="fas fa-lightbulb"></i></div>
+                            <div>Relacione mais diretamente sua redação com o tema proposto, usando palavras-chave do enunciado.</div>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Sugestões para Competência III
+            const suggestionsIII = document.getElementById('suggestions-III');
+            suggestionsIII.innerHTML = '';
+            
+            if (scoreIII.score === 'A') {
+                suggestionsIII.innerHTML += `
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon"><i class="fas fa-check-circle"></i></div>
+                        <div>Ótimo uso de elementos coesivos! Sua redação flui muito bem.</div>
+                    </div>
+                `;
+            } else {
+                if (scoreIII.details.conectivos < 5) {
+                    suggestionsIII.innerHTML += `
+                        <div class="suggestion-item">
+                            <div class="suggestion-icon"><i class="fas fa-lightbulb"></i></div>
+                            <div>Utilize mais conectivos como "além disso", "portanto", "entretanto" para melhorar a coesão.</div>
+                        </div>
+                    `;
+                }
+                
+                if (scoreIII.details.progressao === 'Regular' || scoreIII.details.progressao === 'Precisa melhorar') {
+                    suggestionsIII.innerHTML += `
+                        <div class="suggestion-item">
+                            <div class="suggestion-icon"><i class="fas fa-lightbulb"></i></div>
+                            <div>Garanta que cada parágrafo apresente uma ideia principal e que haja progressão entre eles.</div>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Dicas gerais
+            const generalTips = document.getElementById('general-tips');
+            generalTips.innerHTML = '';
+            
+            const tips = [
+                "Revise sempre sua redação antes de entregar, prestando atenção à ortografia e pontuação.",
+                "Planeje seu texto antes de começar a escrever, definindo a ideia central de cada parágrafo.",
+                "Use um repertório diversificado de conectivos para dar mais fluidez ao texto.",
+                "Mantenha o foco no tema proposto, evitando divagações desconexas.",
+                "Pratique a escrita regularmente para desenvolver sua habilidade de forma consistente."
+            ];
+            
+            tips.forEach(tip => {
+                generalTips.innerHTML += `
+                    <div class="tip-item">
+                        <div class="tip-icon"><i class="fas fa-star"></i></div>
+                        <div>${tip}</div>
+                    </div>
+                `;
+            });
+        }
+        
+        // Funções auxiliares para simulação da análise
+        function countFormalErrors(text) {
+            // Simulação simples de contagem de erros formais
+            const commonErrors = [
+                /,\s*[eE]/g, // vírgula antes de "e"
+                /\s+\./g, // espaço antes do ponto
+                /\.\S/g, // falta de espaço após ponto
+                /\bmais\s+menos\b/gi, // "mais menos"
+                /\bmenos\s+mais\b/gi, // "menos mais"
+                /(\w)\1{3,}/g // letras repetidas (ex: "muuuuito")
+            ];
+            
+            let errorCount = 0;
+            commonErrors.forEach(pattern => {
+                const matches = text.match(pattern);
+                if (matches) errorCount += matches.length;
+            });
+            
+            return Math.min(errorCount, 8); // Limitar para não exagerar
+        }
+        
+        function countConnectors(text) {
+            // Contar conectivos comuns
+            const connectors = [
+                'além disso', 'porém', 'contudo', 'entretanto', 'no entanto',
+                'portanto', 'assim', 'dessa forma', 'desse modo', 'logo',
+                'em suma', 'em resumo', 'finalmente', 'primeiramente',
+                'por outro lado', 'também', 'ademais', 'outrossim', 'assim sendo',
+                'dado que', 'visto que', 'uma vez que', 'embora', 'mesmo que'
+            ];
+            
+            let count = 0;
+            connectors.forEach(connector => {
+                const regex = new RegExp(connector, 'gi');
+                const matches = text.match(regex);
+                if (matches) count += matches.length;
+            });
+            
+            return count;
+        }
+        
+        function generateFormalRegisterFeedback(score, errors, wordCount, grade) {
+            switch(score) {
+                case 'A':
+                    return `Excelente domínio da norma culta! Sua redação apresenta pouquíssimos desvios gramaticais e ortográficos, demonstrando cuidado com o registro formal.`;
+                case 'B':
+                    return `Bom registro formal. Foram identificados ${errors} pequenos desvios. Continue atento à ortografia e pontuação para alcançar a excelência.`;
+                case 'C':
+                    return `Registro formal com algumas dificuldades (${errors} desvios identificados). Recomenda-se revisão mais cuidadosa, especialmente em relação à pontuação.`;
+                case 'D':
+                    return `Registro formal precisa de atenção. Muitos desvios (${errors} identificados) comprometem a qualidade do texto. É fundamental revisar ortografia e gramática.`;
+                default:
+                    return 'Avaliação do registro formal não disponível.';
+            }
+        }
+        
+        function generateThemeAdequacyFeedback(score, themeMentions, paragraphs, grade) {
+            switch(score) {
+                case 'A':
+                    return `Ótima adequação ao tema! Seu texto aborda claramente o assunto proposto, com desenvolvimento apropriado em ${paragraphs} parágrafos.`;
+                case 'B':
+                    return `Boa adequação ao tema. Seu texto aborda o assunto (${themeMentions} menções ao tema) e possui estruturação em ${paragraphs} parágrafos, mas poderia explorar o tema com mais profundidade.`;
+                case 'C':
+                    return `Adequação ao tema parcial. Seu texto tangencia o assunto (${themeMentions} menções ao tema), mas não o desenvolve suficientemente. A estrutura em ${paragraphs} parágrafos poderia ser melhor organizada.`;
+                case 'D':
+                    return `Adequação ao tema insuficiente. Seu texto não aborda claramente o tema proposto (apenas ${themeMentions} menções) e a estrutura em ${paragraphs} parágrafos precisa ser revista.`;
+                default:
+                    return 'Avaliação da adequação ao tema não disponível.';
+            }
+        }
+        
+        function generateCoherenceCohesionFeedback(score, paragraphs, connectors, grade) {
+            switch(score) {
+                case 'A':
+                    return `Excelente coerência e coesão! Seu texto está bem organizado em ${paragraphs} parágrafos e utiliza ${connectors} conectivos adequados, garantindo fluidez e clareza.`;
+                case 'B':
+                    return `Boa coerência e coesão. Seu texto tem ${paragraphs} parágrafos e ${connectors} conectivos, mas poderia melhorar a transição entre ideias para uma leitura mais fluida.`;
+                case 'C':
+                    return `Coerência e coesão regulares. Organização em ${paragraphs} parágrafos e uso de ${connectors} conectivos precisam ser aprimorados para melhorar a fluidez do texto.`;
+                case 'D':
+                    return `Coerência e coesão precisam de atenção. Estrutura textual (${paragraphs} parágrafos) e uso de conectivos (${connectors}) são insuficientes, comprometendo a compreensão do texto.`;
+                default:
+                    return 'Avaliação da coerência e coesão não disponível.';
+            }
+        }
+    </script>
+</body>
+</html>
