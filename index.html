@@ -6,7 +6,6 @@
     <title>Avaliador de Redações CAED</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* (Mantendo todo o CSS anterior igual) */
         :root {
             --primary: #4361ee;
             --secondary: #3a0ca3;
@@ -17,64 +16,83 @@
             --gray: #6c757d;
             --warning: #ff9e00;
             --danger: #e63946;
-            --radius: 12px;
-            --shadow: 0 10px 20px rgba(0,0,0,0.1);
+            --radius: 16px;
+            --shadow: 0 12px 24px rgba(0,0,0,0.1);
             --transition: all 0.3s ease;
+            --gradient-primary: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            --gradient-secondary: linear-gradient(135deg, #4cc9f0 0%, #3a0ca3 100%);
+            --gradient-accent: linear-gradient(135deg, #f72585 0%, #b5179e 100%);
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e3e8f0 100%);
             color: var(--dark);
-            line-height: 1.6;
+            line-height: 1.7;
             min-height: 100vh;
             padding: 20px;
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
         }
         
         header {
             text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
+            margin-bottom: 40px;
+            padding: 30px;
             background: white;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--gradient-primary);
         }
         
         h1 {
-            font-size: 2.5rem;
-            color: var(--secondary);
-            margin-bottom: 10px;
+            font-size: 3rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
+            font-weight: 700;
         }
         
         .subtitle {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--gray);
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
+            font-weight: 500;
         }
         
         .app-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 40px;
         }
         
-        @media (max-width: 1100px) {
+        @media (max-width: 1200px) {
             .app-container {
                 grid-template-columns: 1fr;
             }
@@ -83,79 +101,112 @@
         .card {
             background: white;
             border-radius: var(--radius);
-            padding: 30px;
+            padding: 35px;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
         }
         
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
         
         .card-title {
-            font-size: 1.5rem;
+            font-size: 1.7rem;
             color: var(--secondary);
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--light);
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #f0f2f5;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            font-weight: 600;
         }
         
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
         
         label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-weight: 600;
             color: var(--secondary);
+            font-size: 1.1rem;
         }
         
         select, input, textarea {
             width: 100%;
-            padding: 15px;
+            padding: 18px;
             border: 2px solid #e2e8f0;
             border-radius: var(--radius);
-            font-size: 1rem;
+            font-size: 1.1rem;
             transition: var(--transition);
+            background: #fafbfc;
         }
         
         select:focus, input:focus, textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
+            background: white;
         }
         
         textarea {
-            min-height: 300px;
+            min-height: 350px;
             resize: vertical;
-            line-height: 1.6;
+            line-height: 1.8;
         }
         
         .btn {
-            background: var(--primary);
+            background: var(--gradient-primary);
             color: white;
             border: none;
-            padding: 15px 25px;
+            padding: 18px 30px;
             border-radius: var(--radius);
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 600;
             transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
         }
         
         .btn:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
         }
         
         .btn:active {
@@ -165,20 +216,20 @@
         .loading {
             display: none;
             text-align: center;
-            padding: 40px;
+            padding: 50px;
             background: white;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
         }
         
         .spinner {
-            border: 5px solid rgba(67, 97, 238, 0.2);
+            border: 6px solid rgba(67, 97, 238, 0.2);
             border-left-color: var(--primary);
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 25px;
         }
         
         @keyframes spin {
@@ -189,106 +240,147 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--light);
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #f0f2f5;
         }
         
         .overall-score {
             text-align: center;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: var(--gradient-primary);
             color: white;
-            padding: 25px;
+            padding: 30px;
             border-radius: var(--radius);
-            margin-bottom: 30px;
+            margin-bottom: 35px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .overall-score::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
         }
         
         .score-value {
-            font-size: 4rem;
-            font-weight: 700;
+            font-size: 5rem;
+            font-weight: 800;
             line-height: 1;
-            margin: 15px 0;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
         
         .score-label {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             opacity: 0.9;
+            font-weight: 500;
         }
         
         .competence-card {
-            background: var(--light);
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
             border-radius: var(--radius);
-            padding: 25px;
-            margin-bottom: 25px;
-            border-left: 5px solid var(--primary);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 6px solid var(--primary);
             transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .competence-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.05) 0%, transparent 70%);
         }
         
         .competence-card:hover {
-            transform: translateX(5px);
+            transform: translateX(8px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
         }
         
         .competence-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .competence-title {
-            font-size: 1.3rem;
-            font-weight: 600;
+            font-size: 1.5rem;
+            font-weight: 700;
             color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
         
         .score-badge {
-            padding: 8px 20px;
+            padding: 10px 25px;
             border-radius: 50px;
-            font-weight: 700;
-            font-size: 1.1rem;
+            font-weight: 800;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         
-        .score-A { background: #4ade80; color: white; }
-        .score-B { background: #60a5fa; color: white; }
-        .score-C { background: #fbbf24; color: white; }
-        .score-D { background: #f87171; color: white; }
+        .score-A { background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%); color: white; }
+        .score-B { background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%); color: white; }
+        .score-C { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: white; }
+        .score-D { background: linear-gradient(135deg, #f87171 0%, #ef4444 100%); color: white; }
         
         .feedback {
-            margin-bottom: 20px;
-            line-height: 1.7;
+            margin-bottom: 25px;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: #4a5568;
         }
         
         .suggestions {
             background: white;
-            padding: 20px;
+            padding: 25px;
             border-radius: var(--radius);
-            margin-top: 15px;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
         
         .suggestion-title {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--secondary);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            font-size: 1.3rem;
         }
         
         .suggestion-item {
-            padding: 15px;
-            margin-bottom: 15px;
-            background: #f8fafc;
+            padding: 18px;
+            margin-bottom: 18px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             border-radius: var(--radius);
-            border-left: 4px solid var(--success);
+            border-left: 5px solid var(--success);
             display: flex;
             align-items: flex-start;
-            gap: 15px;
+            gap: 18px;
+            transition: var(--transition);
+        }
+        
+        .suggestion-item:hover {
+            transform: translateX(5px);
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
         }
         
         .suggestion-icon {
             color: var(--success);
-            font-size: 1.2rem;
-            margin-top: 2px;
+            font-size: 1.4rem;
+            margin-top: 3px;
         }
         
         .hidden {
@@ -297,30 +389,41 @@
         
         .tabs {
             display: flex;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             background: white;
             border-radius: var(--radius);
-            padding: 5px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 8px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+            position: relative;
         }
         
         .tab {
             flex: 1;
             text-align: center;
-            padding: 15px;
+            padding: 18px;
             cursor: pointer;
             border-radius: var(--radius);
             transition: var(--transition);
             font-weight: 600;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
         }
         
         .tab.active {
-            background: var(--primary);
+            background: var(--gradient-primary);
             color: white;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
         }
         
         .tab-content {
             display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .tab-content.active {
@@ -330,125 +433,189 @@
         .stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 20px;
+            margin-bottom: 30px;
         }
         
         .stat-card {
             background: white;
-            padding: 20px;
+            padding: 25px;
             border-radius: var(--radius);
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.12);
         }
         
         .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 2.5rem;
+            font-weight: 800;
             color: var(--primary);
-            margin: 10px 0;
+            margin: 15px 0;
         }
         
         .stat-label {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: var(--gray);
+            font-weight: 500;
         }
         
         .improvement-tips {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            padding: 25px;
+            background: var(--gradient-accent);
+            padding: 30px;
             border-radius: var(--radius);
-            margin-top: 30px;
+            margin-top: 35px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .improvement-tips::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
         }
         
         .tips-title {
             color: white;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
         }
         
         .tip-item {
-            background: rgba(255,255,255,0.9);
-            padding: 15px;
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
             border-radius: var(--radius);
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             display: flex;
             align-items: flex-start;
-            gap: 15px;
+            gap: 18px;
+            transition: var(--transition);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .tip-item:hover {
+            transform: translateX(8px);
+            background: rgba(255,255,255,1);
         }
         
         .tip-icon {
             color: var(--accent);
-            font-size: 1.2rem;
-            margin-top: 2px;
+            font-size: 1.5rem;
+            margin-top: 3px;
         }
         
         .print-btn {
-            background: var(--gray);
-            margin-top: 20px;
+            background: var(--gradient-secondary);
+            margin-top: 25px;
         }
         
         .print-btn:hover {
-            background: #5a6268;
+            background: var(--gradient-primary);
         }
         
         footer {
             text-align: center;
-            margin-top: 40px;
-            padding: 20px;
+            margin-top: 50px;
+            padding: 25px;
             color: var(--gray);
-            font-size: 0.9rem;
+            font-size: 1rem;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
         }
         
         .competence-details {
-            margin-top: 20px;
+            margin-top: 25px;
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
         
         .detail-item {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
+            padding: 15px 0;
             border-bottom: 1px solid #e2e8f0;
+            transition: var(--transition);
+        }
+        
+        .detail-item:hover {
+            background: #f8fafc;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin: 0 -10px;
+            border-radius: 8px;
         }
         
         .detail-label {
-            font-weight: 500;
+            font-weight: 600;
+            color: var(--secondary);
         }
         
         .detail-value {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--primary);
+            font-size: 1.1rem;
         }
         
         .essay-highlight-container {
-            margin-top: 30px;
-            border: 1px solid #e2e8f0;
+            margin-top: 35px;
+            border: 2px solid #e2e8f0;
             border-radius: var(--radius);
             overflow: hidden;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
         }
         
         .highlight-controls {
             display: flex;
-            background: var(--light);
-            padding: 15px;
-            border-bottom: 1px solid #e2e8f0;
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+            padding: 20px;
+            border-bottom: 2px solid #e2e8f0;
         }
         
         .highlight-option {
-            padding: 8px 15px;
-            margin-right: 10px;
+            padding: 12px 25px;
+            margin-right: 15px;
             border-radius: 50px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;
             transition: var(--transition);
             border: 2px solid transparent;
+            font-size: 1.1rem;
         }
         
         .highlight-option.active {
             border-color: var(--primary);
             background: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         
         .highlight-option.I { color: #e63946; }
@@ -456,73 +623,151 @@
         .highlight-option.III { color: #ff9e00; }
         
         .essay-highlight {
-            padding: 25px;
+            padding: 30px;
             background: white;
-            min-height: 300px;
+            min-height: 350px;
             max-height: 500px;
             overflow-y: auto;
-            line-height: 1.8;
-            font-size: 1.1rem;
+            line-height: 1.9;
+            font-size: 1.15rem;
         }
         
         .highlight-I {
-            background-color: rgba(230, 57, 70, 0.2);
-            padding: 2px 4px;
-            border-radius: 3px;
-            border-bottom: 2px solid #e63946;
+            background-color: rgba(230, 57, 70, 0.15);
+            padding: 3px 6px;
+            border-radius: 4px;
+            border-bottom: 3px solid #e63946;
+            font-weight: 600;
         }
         
         .highlight-II {
-            background-color: rgba(58, 134, 255, 0.2);
-            padding: 2px 4px;
-            border-radius: 3px;
-            border-bottom: 2px solid #3a86ff;
+            background-color: rgba(58, 134, 255, 0.15);
+            padding: 3px 6px;
+            border-radius: 4px;
+            border-bottom: 3px solid #3a86ff;
+            font-weight: 600;
         }
         
         .highlight-III {
-            background-color: rgba(255, 158, 0, 0.2);
-            padding: 2px 4px;
-            border-radius: 3px;
-            border-bottom: 2px solid #ff9e00;
+            background-color: rgba(255, 158, 0, 0.15);
+            padding: 3px 6px;
+            border-radius: 4px;
+            border-bottom: 3px solid #ff9e00;
+            font-weight: 600;
         }
         
         .legend {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-top: 15px;
+            gap: 25px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
         
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
+            gap: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 10px 20px;
+            background: white;
+            border-radius: 50px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
         }
         
         .legend-color {
-            width: 15px;
-            height: 15px;
-            border-radius: 3px;
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
         }
         
-        .legend-I { background-color: rgba(230, 57, 70, 0.2); border: 1px solid #e63946; }
-        .legend-II { background-color: rgba(58, 134, 255, 0.2); border: 1px solid #3a86ff; }
-        .legend-III { background-color: rgba(255, 158, 0, 0.2); border: 1px solid #ff9e00; }
+        .legend-I { background-color: rgba(230, 57, 70, 0.2); border: 2px solid #e63946; }
+        .legend-II { background-color: rgba(58, 134, 255, 0.2); border: 2px solid #3a86ff; }
+        .legend-III { background-color: rgba(255, 158, 0, 0.2); border: 2px solid #ff9e00; }
         
         .highlight-explanation {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8f9fa;
+            margin-top: 25px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             border-radius: var(--radius);
-            border-left: 4px solid var(--primary);
+            border-left: 6px solid var(--primary);
         }
         
         .explanation-title {
-            font-weight: 600;
-            margin-bottom: 10px;
+            font-weight: 700;
+            margin-bottom: 15px;
             color: var(--secondary);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .competence-progress {
+            margin-top: 20px;
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+        
+        .progress-I { background: linear-gradient(90deg, #e63946, #f87171); }
+        .progress-II { background: linear-gradient(90deg, #3a86ff, #60a5fa); }
+        .progress-III { background: linear-gradient(90deg, #ff9e00, #fbbf24); }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        .report-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+        }
+        
+        .report-title {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f2f5;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .improvement-action {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-left: 5px solid var(--success);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 0 var(--radius) var(--radius) 0;
+        }
+        
+        .action-title {
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
     </style>
 </head>
@@ -530,7 +775,7 @@
     <div class="container">
         <header>
             <h1><i class="fas fa-graduation-cap"></i> Avaliador de Redações CAED</h1>
-            <p class="subtitle">Avaliação inteligente com IA para os anos finais do Ensino Fundamental</p>
+            <p class="subtitle">Avaliação inteligente com IA para os anos finais do Ensino Fundamental - Destaque de termos e relatório detalhado por competência</p>
         </header>
         
         <div class="app-container">
@@ -554,7 +799,11 @@
                 
                 <div class="form-group">
                     <label for="essay"><i class="fas fa-file-alt"></i> Digite sua redação:</label>
-                    <textarea id="essay" placeholder="Cole ou digite sua redação aqui...">A preservação ambiental é um tema muito importante nos dias de hoje. A natureza precisa ser cuidada por todos nós. É preciso que as pessoas se conscientizem sobre a importância de reciclar o lixo e não jogar nas ruas. Além disso, é fundamental economizar água e energia elétrica. As florestas são importantes para o equilíbrio do planeta e não podem ser desmatadas. Todos devemos fazer nossa parte para proteger o meio ambiente.</textarea>
+                    <textarea id="essay" placeholder="Cole ou digite sua redação aqui...">A preservação ambiental é um tema muito importante nos dias de hoje. A natureza precisa ser cuidada por todos nós. É preciso que as pessoas se conscientizem sobre a importância de reciclar o lixo e não jogar nas ruas. Além disso, é fundamental economizar água e energia elétrica. As florestas são importantes para o equilíbrio do planeta e não podem ser desmatadas. Todos devemos fazer nossa parte para proteger o meio ambiente.
+
+Infelizmente, muitas pessoas ainda não tem consciência ambiental e continuam poluindo rios e mares. O lixo nas cidades é um grande problema que afeta a saúde pública. É necessário que o governo crie políticas públicas para educar a população sobre a importância da preservação.
+
+Em resumo, cuidar do meio ambiente é essencial para garantir um futuro melhor para as próximas gerações. Cada pequena ação conta quando se trata de proteger nosso planeta.</textarea>
                 </div>
                 
                 <button id="evaluate-btn" class="btn">
@@ -574,10 +823,10 @@
                 </div>
                 
                 <div id="no-results">
-                    <div style="text-align: center; padding: 40px 20px;">
-                        <i class="fas fa-file-alt" style="font-size: 4rem; color: #c3cfe2; margin-bottom: 20px;"></i>
-                        <h3 style="color: var(--gray); margin-bottom: 15px;">Nenhuma redação avaliada ainda</h3>
-                        <p>Preencha os dados da redação ao lado e clique em "Avaliar Redação com IA" para ver os resultados.</p>
+                    <div style="text-align: center; padding: 60px 20px;">
+                        <i class="fas fa-file-alt" style="font-size: 5rem; color: #c3cfe2; margin-bottom: 25px;"></i>
+                        <h3 style="color: var(--gray); margin-bottom: 20px; font-size: 1.5rem;">Nenhuma redação avaliada ainda</h3>
+                        <p style="font-size: 1.1rem;">Preencha os dados da redação ao lado e clique em "Avaliar Redação com IA" para ver os resultados detalhados.</p>
                     </div>
                 </div>
                 
@@ -594,6 +843,7 @@
                         <div class="tab" data-tab="competence-II">Competência II</div>
                         <div class="tab" data-tab="competence-III">Competência III</div>
                         <div class="tab" data-tab="highlights">Destaques</div>
+                        <div class="tab" data-tab="report">Relatório</div>
                     </div>
                     
                     <div class="tab-content active" id="summary-tab">
@@ -615,6 +865,32 @@
                             </div>
                         </div>
                         
+                        <div class="competence-progress">
+                            <div class="progress-label">
+                                <span>Competência I - Registro Formal</span>
+                                <span id="progress-I-value">90%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill progress-I" id="progress-I" style="width: 90%"></div>
+                            </div>
+                            
+                            <div class="progress-label">
+                                <span>Competência II - Adequação ao Tema</span>
+                                <span id="progress-II-value">75%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill progress-II" id="progress-II" style="width: 75%"></div>
+                            </div>
+                            
+                            <div class="progress-label">
+                                <span>Competência III - Coerência e Coesão</span>
+                                <span id="progress-III-value">80%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill progress-III" id="progress-III" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        
                         <div class="competence-card">
                             <div class="competence-header">
                                 <div class="competence-title">Resumo da Avaliação</div>
@@ -633,6 +909,7 @@
                         </div>
                     </div>
                     
+                    <!-- Conteúdo das outras abas permanece igual -->
                     <div class="tab-content" id="competence-I-tab">
                         <div class="competence-card">
                             <div class="competence-header">
@@ -784,10 +1061,83 @@
                             </div>
                             
                             <div class="highlight-explanation">
-                                <div class="explanation-title">Como interpretar os destaques:</div>
+                                <div class="explanation-title"><i class="fas fa-info-circle"></i> Como interpretar os destaques:</div>
                                 <p><strong>Competência I (Vermelho):</strong> Termos com possíveis problemas de ortografia, gramática ou registro formal.</p>
                                 <p><strong>Competência II (Azul):</strong> Expressões que demonstram ou poderiam melhorar a adequação ao tema proposto.</p>
                                 <p><strong>Competência III (Laranja):</strong> Elementos de coesão (conectivos) ou trechos que afetam a coerência do texto.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="report-tab">
+                        <div class="competence-card">
+                            <div class="competence-header">
+                                <div class="competence-title">Relatório Detalhado de Avaliação</div>
+                            </div>
+                            
+                            <div class="report-section">
+                                <h3 class="report-title"><i class="fas fa-file-alt"></i> Resumo Executivo</h3>
+                                <div class="feedback">
+                                    <p>Sua redação foi avaliada considerando as três competências do modelo CAED. O desempenho geral foi <strong>satisfatório</strong>, com destaque para o domínio da norma culta. Abaixo estão as análises detalhadas e planos de ação para cada competência.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="report-section">
+                                <h3 class="report-title"><i class="fas fa-tasks"></i> Plano de Melhoria por Competência</h3>
+                                
+                                <div class="improvement-action">
+                                    <h4 class="action-title"><i class="fas fa-pen-fancy"></i> Competência I - Registro Formal</h4>
+                                    <p><strong>Status:</strong> <span class="detail-value">Excelente</span></p>
+                                    <p><strong>Ações Recomendadas:</strong></p>
+                                    <ul style="margin-left: 20px; margin-top: 10px;">
+                                        <li>Continue revisando cuidadosamente a ortografia antes de entregar</li>
+                                        <li>Pratique o uso correto da vírgula em diferentes contextos</li>
+                                        <li>Mantenha o padrão culto da língua em todas as produções textuais</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="improvement-action">
+                                    <h4 class="action-title"><i class="fas fa-bullseye"></i> Competência II - Adequação ao Tema</h4>
+                                    <p><strong>Status:</strong> <span class="detail-value">Bom (pode melhorar)</span></p>
+                                    <p><strong>Ações Recomendadas:</strong></p>
+                                    <ul style="margin-left: 20px; margin-top: 10px;">
+                                        <li>Relacione mais explicitamente os argumentos com o tema central</li>
+                                        <li>Desenvolva mais profundamente cada aspecto do tema</li>
+                                        <li>Use palavras-chave do enunciado ao longo de todo o texto</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="improvement-action">
+                                    <h4 class="action-title"><i class="fas fa-link"></i> Competência III - Coerência e Coesão</h4>
+                                    <p><strong>Status:</strong> <span class="detail-value">Bom (pode melhorar)</span></p>
+                                    <p><strong>Ações Recomendadas:</strong></p>
+                                    <ul style="margin-left: 20px; margin-top: 10px;">
+                                        <li>Amplie o uso de conectivos para melhorar a fluidez do texto</li>
+                                        <li>Garanta que cada parágrafo tenha uma ideia principal clara</li>
+                                        <li>Estabeleça relações mais explícitas entre os parágrafos</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="report-section">
+                                <h3 class="report-title"><i class="fas fa-chart-bar"></i> Métricas de Desempenho</h3>
+                                <div class="stats">
+                                    <div class="stat-card">
+                                        <div class="stat-label">Palavras</div>
+                                        <div class="stat-value" id="word-count">248</div>
+                                        <div class="stat-label">Total</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-label">Parágrafos</div>
+                                        <div class="stat-value" id="paragraph-count">4</div>
+                                        <div class="stat-label">Estruturados</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-label">Conectivos</div>
+                                        <div class="stat-value" id="connector-count">7</div>
+                                        <div class="stat-label">Utilizados</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -872,7 +1222,7 @@
                     evaluateEssay(essayText, grade, theme);
                     document.getElementById('loading').style.display = 'none';
                     document.getElementById('results-content').classList.remove('hidden');
-                }, 1500);
+                }, 2000);
             });
             
             // Botão de impressão
@@ -907,7 +1257,8 @@
                 { word: "concerteza", correct: "com certeza" },
                 { word: "menas", correct: "menos" },
                 { word: "rázão", correct: "razão" },
-                { word: "proucura", correct: "procura" }
+                { word: "proucura", correct: "procura" },
+                { word: "tem", correct: "têm" } // para verbo ter
             ];
             
             spellingIssues.forEach(issue => {
@@ -930,6 +1281,17 @@
                 }
             });
             
+            // Adicionar termos relacionados ao tema
+            const relatedTerms = ["preservação", "ambiental", "natureza", "meio ambiente", "planeta", "florestas"];
+            relatedTerms.forEach(term => {
+                if (essay.toLowerCase().includes(term)) {
+                    highlights.II.push({
+                        term: term,
+                        explanation: `Termo relacionado ao tema "${theme}".`
+                    });
+                }
+            });
+            
             // Competência III - Conectivos
             const connectors = [
                 { word: "além disso", explanation: "Conectivo de adição" },
@@ -941,7 +1303,9 @@
                 { word: "assim", explanation: "Conectivo de conclusão" },
                 { word: "dessa forma", explanation: "Conectivo de conclusão" },
                 { word: "desse modo", explanation: "Conectivo de conclusão" },
-                { word: "logo", explanation: "Conectivo de conclusão" }
+                { word: "logo", explanation: "Conectivo de conclusão" },
+                { word: "em resumo", explanation: "Conectivo de conclusão" },
+                { word: "infelizmente", explanation: "Conectivo de adversidade" }
             ];
             
             connectors.forEach(connector => {
@@ -1004,7 +1368,7 @@
             essayHighlight.innerHTML = highlightedEssay;
         }
         
-        // ... (mantendo as outras funções iguais)
+        // ... (mantendo as outras funções de avaliação)
         function evaluateFormalRegister(essay, grade) {
             const errors = countFormalErrors(essay);
             const wordCount = essay.split(/\s+/).length;
@@ -1180,6 +1544,12 @@
             const overallScore = calculateOverallScore(scoreI.score, scoreII.score, scoreIII.score);
             document.getElementById('overall-score').textContent = overallScore;
             
+            // Atualizar barras de progresso
+            updateProgressBars(scoreI.score, scoreII.score, scoreIII.score);
+            
+            // Atualizar métricas do relatório
+            updateReportMetrics(essay);
+            
             // Atualizar resumo
             document.getElementById('summary-feedback').textContent = generateSummaryFeedback(scoreI, scoreII, scoreIII);
             
@@ -1190,6 +1560,30 @@
             applyHighlight('all');
         }
         
+        function updateProgressBars(scoreI, scoreII, scoreIII) {
+            const scoreMap = { 'A': 90, 'B': 75, 'C': 60, 'D': 40 };
+            
+            document.getElementById('progress-I').style.width = scoreMap[scoreI] + '%';
+            document.getElementById('progress-I-value').textContent = scoreMap[scoreI] + '%';
+            
+            document.getElementById('progress-II').style.width = scoreMap[scoreII] + '%';
+            document.getElementById('progress-II-value').textContent = scoreMap[scoreII] + '%';
+            
+            document.getElementById('progress-III').style.width = scoreMap[scoreIII] + '%';
+            document.getElementById('progress-III-value').textContent = scoreMap[scoreIII] + '%';
+        }
+        
+        function updateReportMetrics(essay) {
+            const wordCount = essay.split(/\s+/).length;
+            const paragraphCount = essay.split(/\n\s*\n/).filter(p => p.trim().length > 0).length;
+            const connectorCount = countConnectors(essay);
+            
+            document.getElementById('word-count').textContent = wordCount;
+            document.getElementById('paragraph-count').textContent = paragraphCount;
+            document.getElementById('connector-count').textContent = connectorCount;
+        }
+        
+        // ... (mantendo as outras funções auxiliares)
         function calculateOverallScore(scoreI, scoreII, scoreIII) {
             const scoreMap = { 'A': 9.5, 'B': 8.0, 'C': 6.5, 'D': 4.0 };
             const total = (scoreMap[scoreI] + scoreMap[scoreII] + scoreMap[scoreIII]) / 3;
@@ -1237,6 +1631,17 @@
                         </div>
                     `;
                 }
+                
+                suggestionsI.innerHTML += `
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon"><i class="fas fa-lightbulb"></i></div>
+                        <div>Consulte o dicionário para verificar a grafia de palavras que você tem dúvida.</div>
+                    </div>
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon"><i class="fas fa-lightbulb"></i></div>
+                        <div>Preste atenção ao uso correto da vírgula, especialmente antes de "e" em enumerações.</div>
+                    </div>
+                `;
             }
             
             // Sugestões para Competência II
@@ -1259,6 +1664,17 @@
                         </div>
                     `;
                 }
+                
+                suggestionsII.innerHTML += `
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon"><i class="fas fa-lightbulb"></i></div>
+                        <div>Relacione mais diretamente sua redação com o tema proposto, usando palavras-chave do enunciado.</div>
+                    </div>
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon"><i class="fas fa-lightbulb"></i></div>
+                        <div>Desenvolva cada ideia com mais profundidade, apresentando exemplos e argumentos consistentes.</div>
+                    </div>
+                `;
             }
             
             // Sugestões para Competência III
@@ -1281,6 +1697,17 @@
                         </div>
                     `;
                 }
+                
+                suggestionsIII.innerHTML += `
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon"><i class="fas fa-lightbulb"></i></div>
+                        <div>Garanta que cada parágrafo apresente uma ideia principal e que haja progressão entre eles.</div>
+                    </div>
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon"><i class="fas fa-lightbulb"></i></div>
+                        <div>Use pronomes e sinônimos para evitar repetições excessivas de palavras.</div>
+                    </div>
+                `;
             }
             
             // Dicas gerais
@@ -1292,7 +1719,8 @@
                 "Planeje seu texto antes de começar a escrever, definindo a ideia central de cada parágrafo.",
                 "Use um repertório diversificado de conectivos para dar mais fluidez ao texto.",
                 "Mantenha o foco no tema proposto, evitando divagações desconexas.",
-                "Pratique a escrita regularmente para desenvolver sua habilidade de forma consistente."
+                "Pratique a escrita regularmente para desenvolver sua habilidade de forma consistente.",
+                "Peça para alguém ler sua redação e dar feedback sobre clareza e compreensão."
             ];
             
             tips.forEach(tip => {
@@ -1329,7 +1757,7 @@
                 'além disso', 'porém', 'contudo', 'entretanto', 'no entanto',
                 'portanto', 'assim', 'dessa forma', 'desse modo', 'logo',
                 'em suma', 'em resumo', 'finalmente', 'primeiramente',
-                'por outro lado', 'também', 'ademais'
+                'por outro lado', 'também', 'ademais', 'infelizmente'
             ];
             
             let count = 0;
@@ -1344,30 +1772,30 @@
         
         function generateFormalRegisterFeedback(score, errors, wordCount, grade) {
             switch(score) {
-                case 'A': return `Excelente domínio da norma culta! Sua redação apresenta pouquíssimos desvios gramaticais e ortográficos.`;
-                case 'B': return `Bom registro formal. Foram identificados ${errors} pequenos desvios. Continue atento à ortografia e pontuação.`;
-                case 'C': return `Registro formal com algumas dificuldades (${errors} desvios identificados). Recomenda-se revisão mais cuidadosa.`;
-                case 'D': return `Registro formal precisa de atenção. Muitos desvios (${errors} identificados) comprometem a qualidade do texto.`;
+                case 'A': return `Excelente domínio da norma culta! Sua redação apresenta pouquíssimos desvios gramaticais e ortográficos, demonstrando cuidado com o registro formal.`;
+                case 'B': return `Bom registro formal. Foram identificados ${errors} pequenos desvios. Continue atento à ortografia e pontuação para alcançar a excelência.`;
+                case 'C': return `Registro formal com algumas dificuldades (${errors} desvios identificados). Recomenda-se revisão mais cuidadosa, especialmente em relação à pontuação.`;
+                case 'D': return `Registro formal precisa de atenção. Muitos desvios (${errors} identificados) comprometem a qualidade do texto. É fundamental revisar ortografia e gramática.`;
                 default: return 'Avaliação do registro formal não disponível.';
             }
         }
         
         function generateThemeAdequacyFeedback(score, themeMentions, paragraphs, grade) {
             switch(score) {
-                case 'A': return `Ótima adequação ao tema! Seu texto aborda claramente o assunto proposto.`;
-                case 'B': return `Boa adequação ao tema. Seu texto aborda o assunto, mas poderia explorá-lo mais profundamente.`;
-                case 'C': return `Adequação ao tema parcial. Seu texto tangencia o assunto, mas não o desenvolve suficientemente.`;
-                case 'D': return `Adequação ao tema insuficiente. Seu texto não aborda claramente o tema proposto.`;
+                case 'A': return `Ótima adequação ao tema! Seu texto aborda claramente o assunto proposto, com desenvolvimento apropriado em ${paragraphs} parágrafos.`;
+                case 'B': return `Boa adequação ao tema. Seu texto aborda o assunto (${themeMentions} menções ao tema) e possui estruturação em ${paragraphs} parágrafos, mas poderia explorar o tema com mais profundidade.`;
+                case 'C': return `Adequação ao tema parcial. Seu texto tangencia o assunto (${themeMentions} menções ao tema), mas não o desenvolve suficientemente. A estrutura em ${paragraphs} parágrafos poderia ser melhor organizada.`;
+                case 'D': return `Adequação ao tema insuficiente. Seu texto não aborda claramente o tema proposto (apenas ${themeMentions} menções) e a estrutura em ${paragraphs} parágrafos precisa ser revista.`;
                 default: return 'Avaliação da adequação ao tema não disponível.';
             }
         }
         
         function generateCoherenceCohesionFeedback(score, paragraphs, connectors, grade) {
             switch(score) {
-                case 'A': return `Excelente coerência e coesão! Seu texto está bem organizado e utiliza conectivos adequados.`;
-                case 'B': return `Boa coerência e coesão. Seu texto tem boa organização, mas poderia melhorar a transição entre ideias.`;
-                case 'C': return `Coerência e coesão regulares. Organização e uso de conectivos precisam ser aprimorados.`;
-                case 'D': return `Coerência e coesão precisam de atenção. Estrutura textual e uso de conectivos são insuficientes.`;
+                case 'A': return `Excelente coerência e coesão! Seu texto está bem organizado em ${paragraphs} parágrafos e utiliza ${connectors} conectivos adequados, garantindo fluidez e clareza.`;
+                case 'B': return `Boa coerência e coesão. Seu texto tem ${paragraphs} parágrafos e ${connectors} conectivos, mas poderia melhorar a transição entre ideias para uma leitura mais fluida.`;
+                case 'C': return `Coerência e coesão regulares. Organização em ${paragraphs} parágrafos e uso de ${connectors} conectivos precisam ser aprimorados para melhorar a fluidez do texto.`;
+                case 'D': return `Coerência e coesão precisam de atenção. Estrutura textual (${paragraphs} parágrafos) e uso de conectivos (${connectors}) são insuficientes, comprometendo a compreensão do texto.`;
                 default: return 'Avaliação da coerência e coesão não disponível.';
             }
         }
